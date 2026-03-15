@@ -125,9 +125,9 @@ const drawTitle = () => {
   textSize(60)
   noStroke()
   textFont(font)
-  text("Dear       , you are not the only one tracking me.", canvasProps.center.x, 0)
+  text("Dear       , don't worry, I'm tracking me too!", canvasProps.center.x, 0)
   imageMode(CENTER)
-  image(logo, 594, -15, 90, 90);
+  image(logo, 645, -15, 90, 90);
   pop()
 }
 
