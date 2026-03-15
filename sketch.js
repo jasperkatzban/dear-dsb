@@ -41,7 +41,7 @@ let days = []
 Object.keys(entries).forEach(date => {
   const entry = entries[date]
   let parsedDay = {
-    date: date,
+    date: entry.dayNum,
     day: entry.day,
     morning: {
       cost: entry.costMorning,
@@ -65,7 +65,7 @@ Object.keys(entries).forEach(date => {
   days.push(parsedDay)
 });
 
-let maxScrollPos = -((days.length + 1) * entryLayout.height - canvasProps.height + entryLayout.marginVertical)
+let maxScrollPos = -((days.length + 3) * entryLayout.height - canvasProps.height + entryLayout.marginVertical)
 
 function setup() {
   createCanvas(1920, 1080)
@@ -158,13 +158,13 @@ const drawScaleTop = () => {
   textFont(font)
 
   const morningTimes = [
-    { time: 480, text: "Waking Up" },
+    { time: 480, text: "8:00" },
     { time: 495, text: "8:15" },
     { time: 510, text: "8:30" },
     { time: 525, text: "8:45" },
     { time: 540, text: "9:00" },
     { time: 555, text: "9:15" },
-    { time: 570, text: "On the Job" },
+    { time: 570, text: "" },
   ]
 
 
@@ -179,7 +179,7 @@ const drawScaleTop = () => {
     { time: 1035, text: "17:15" },
     { time: 1050, text: "17:30" },
     { time: 1065, text: "17:45" },
-    { time: 1080, text: "Hungry" },
+    { time: 1080, text: "18:00" },
   ]
 
   eveningTimes.forEach(time => {
@@ -193,51 +193,60 @@ const drawLegend = () => {
   translate(0, canvasProps.height - entryLayout.marginVertical / 2)
   stroke("#B127C6")
   strokeWeight(5)
-  line(100, 15, 100, -15)
+  line(100, 25, 100, -5)
   fill(0)
   noStroke()
   textAlign(LEFT, CENTER)
   textSize(31)
   textFont(font)
-  text("Attempted Arrival", 115, -5)
+  text("Attempted Arrival", 115, 5)
 
-  text("Working", 470, -5)
+  text("Workday", 470, 5)
 
-  text("S–Train", 720, -5)
+  text("S–Train", 720, 5)
 
-  text("Metro", 950, -5)
+  text("Metro", 950, 5)
 
-  text("Regional Train", 1160, -5)
+  text("Regional Train", 1160, 5)
 
-  text("InterCity Train", 1460, -5)
+  text("InterCity Train", 1460, 5)
 
-  text("Bus", 1750, -5)
+  text("Bus", 1750, 5)
+
+  textSize(25)
+  textAlign(CENTER, CENTER)
+  text("Waking Up", 55, -55)
+  text("Morning Commute", 500, -55)
+  text("On The Job", canvasProps.center.x, -55)
+  text("Evening Commute", 1420, -55)
+  text("Hungry", 1870, -55)
+
 
   rectMode(RADIUS)
 
   fill(0, 50, 150, 40)
   stroke(0, 0, 0, 30)
   strokeWeight(1)
-  rect(450, 0, 10, 10, 5)
+  rect(450, 10, 10, 10, 5)
 
 
   stroke(0)
   strokeWeight(3)
 
   fill("#F2AC16")
-  rect(1730, 0, 10, 10, 5)
+  rect(1730, 10, 10, 10, 5)
 
   fill("#2DB281")
-  rect(1440, 0, 10, 10, 5)
+  rect(1440, 10, 10, 10, 5)
 
   fill("#2274AE")
-  rect(1140, 0, 10, 10, 5)
+  rect(1140, 10, 10, 10, 5)
 
   fill("#e9e9e9")
-  rect(930, 0, 10, 10, 5)
+  rect(930, 10, 10, 10, 5)
 
   fill("#D61B1B")
-  rect(700, 0, 10, 10, 5)
+  rect(700, 10, 10, 10, 5)
 
   pop()
 }
