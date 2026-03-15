@@ -1,9 +1,9 @@
 let font
-let fontBold
+let logo
 
 function preload() {
-  font = loadFont("assets/Sniglet-Regular.ttf");
-  fontBold = loadFont("assets/Sniglet-ExtraBold.ttf");
+  font = loadFont("assets/PatrickHandSC-Regular.ttf");
+  logo = loadImage("assets/logo.png");
 }
 
 let scrollPos = 0;
@@ -21,10 +21,10 @@ const entryLayout = {
   marginLeft: 50,
   marginRight: -50,
   marginVertical: 150,
-  marginVerticalTrain: 20,
-  marginVerticalTarget: 10,
+  marginVerticalTrain: 15,
+  marginVerticalTarget: 8,
   width: canvasProps.width / 2 - 50,
-  height: 75,
+  height: 50,
   morningTimeRange: {
     min: 480,
     max: 570,
@@ -88,6 +88,7 @@ function draw() {
   drawDays()
   pop()
 
+  console.log(mouseX)
 
   drawSurroundings()
 }
@@ -105,17 +106,34 @@ const drawSurroundings = () => {
 
   noFill()
   stroke(0)
-  strokeWeight(1)
+  strokeWeight(3)
   rect(entryLayout.marginLeft, entryLayout.marginVertical, canvasProps.width + 2 * entryLayout.marginRight, canvasProps.height - 2 * entryLayout.marginVertical)
 
   drawLegend()
 
   drawScaleTop()
+
+  drawTitle()
+}
+
+const drawTitle = () => {
+  push()
+  translate(0, entryLayout.marginVertical / 2)
+
+  fill(0)
+  textAlign(CENTER, BASELINE)
+  textSize(60)
+  noStroke()
+  textFont(font)
+  text("Dear       , you are not the only one tracking me.", canvasProps.center.x, 0)
+  imageMode(CENTER)
+  image(logo, 594, -15, 90, 90);
+  pop()
 }
 
 const drawScaleUnderlay = () => {
-  stroke(0)
-  strokeWeight(1)
+  stroke(200)
+  strokeWeight(2)
 
   const morningTimes = [495, 510, 525, 540, 555]
 
@@ -133,25 +151,26 @@ const drawScaleUnderlay = () => {
 }
 
 const drawScaleTop = () => {
-  fill(100)
+  fill(0)
   textAlign(CENTER, BASELINE)
-  textSize(20)
+  textSize(25)
   noStroke()
   textFont(font)
 
   const morningTimes = [
-    { time: 480, text: "8:00" },
+    { time: 480, text: "Waking Up" },
     { time: 495, text: "8:15" },
     { time: 510, text: "8:30" },
     { time: 525, text: "8:45" },
     { time: 540, text: "9:00" },
     { time: 555, text: "9:15" },
+    { time: 570, text: "On the Job" },
   ]
 
 
   morningTimes.forEach(time => {
     const xPos = map(time.time, entryLayout.morningTimeRange.min, entryLayout.morningTimeRange.max, entryLayout.marginLeft, canvasProps.center.x)
-    text(time.text, xPos, entryLayout.marginVertical - 10)
+    text(time.text, xPos, entryLayout.marginVertical - 15)
   })
 
   const eveningTimes = [
@@ -160,29 +179,65 @@ const drawScaleTop = () => {
     { time: 1035, text: "17:15" },
     { time: 1050, text: "17:30" },
     { time: 1065, text: "17:45" },
-    { time: 1080, text: "18:00" },
+    { time: 1080, text: "Hungry" },
   ]
 
   eveningTimes.forEach(time => {
     const xPos = map(time.time, entryLayout.eveningTimeRange.min, entryLayout.eveningTimeRange.max, canvasProps.center.x, canvasProps.width + entryLayout.marginRight)
-    text(time.text, xPos, entryLayout.marginVertical - 10)
+    text(time.text, xPos, entryLayout.marginVertical - 15)
   })
 }
 
 const drawLegend = () => {
   push()
   translate(0, canvasProps.height - entryLayout.marginVertical / 2)
-  stroke(100, 150, 255)
+  stroke("#B127C6")
   strokeWeight(5)
-  line(100, 30, 100, -30)
+  line(100, 15, 100, -15)
   fill(0)
   noStroke()
   textAlign(LEFT, CENTER)
-  textSize(25)
+  textSize(31)
   textFont(font)
-  text("When I Tried To Arrive", 110, 0)
+  text("Attempted Arrival", 115, -5)
 
-  text("S–Train", 400, 0)
+  text("Working", 470, -5)
+
+  text("S–Train", 720, -5)
+
+  text("Metro", 950, -5)
+
+  text("Regional Train", 1160, -5)
+
+  text("InterCity Train", 1460, -5)
+
+  text("Bus", 1750, -5)
+
+  rectMode(RADIUS)
+
+  fill(0, 50, 150, 40)
+  stroke(0, 0, 0, 30)
+  strokeWeight(1)
+  rect(450, 0, 10, 10, 5)
+
+
+  stroke(0)
+  strokeWeight(3)
+
+  fill("#F2AC16")
+  rect(1730, 0, 10, 10, 5)
+
+  fill("#2DB281")
+  rect(1440, 0, 10, 10, 5)
+
+  fill("#2274AE")
+  rect(1140, 0, 10, 10, 5)
+
+  fill("#e9e9e9")
+  rect(930, 0, 10, 10, 5)
+
+  fill("#D61B1B")
+  rect(700, 0, 10, 10, 5)
 
   pop()
 }
@@ -204,18 +259,27 @@ const drawDay = (yPos, dayProps) => {
 }
 
 const drawCenter = (date, day) => {
-  fill(255)
-  stroke(0)
+  if (day == "Saturday" || day == "Sunday") {
+    fill(235)
+    stroke(150)
+  } else {
+    fill(255)
+    stroke(0)
+  }
   strokeWeight(2)
   rectMode(CENTER)
-  rect(canvasProps.center.x, entryLayout.height / 2, 120, entryLayout.height - 2 * entryLayout.marginVerticalTarget, 50)
+  rect(canvasProps.center.x, entryLayout.height / 2, 110, entryLayout.height - 2 * entryLayout.marginVerticalTarget, 50)
 
-  fill(0)
+  if (day == "Saturday" || day == "Sunday") {
+    fill(150)
+  } else {
+    fill(0)
+  }
   noStroke()
   textAlign(CENTER, CENTER)
-  textSize(25)
+  textSize(31)
   textFont(font)
-  text(`${day.substr(0, 3).toUpperCase()} ${date}`, canvasProps.center.x, entryLayout.height / 2 + 3)
+  text(`${day.substr(0, 3).toUpperCase()} ${date}`, canvasProps.center.x, entryLayout.height / 2 - 5)
 }
 
 
@@ -223,19 +287,26 @@ const drawEntry = (xPos, entryProps, mode, day) => {
   push()
   translate(xPos, 0);
   if (day == "Saturday" || day == "Sunday") {
-    fill(0, 0, 0, 30)
+    fill(0, 0, 0, 20)
+    stroke(150)
   } else {
     noFill()
+    stroke(0)
   }
-  stroke(0)
   strokeWeight(2)
   rectMode(CORNER)
   rect(0, 0, entryLayout.width, entryLayout.height)
-  drawTimeline(entryProps, mode)
+  drawTimeline(entryProps, mode, day)
+
+  if (day == "Saturday") {
+    stroke(0)
+    strokeWeight(2)
+    line(0, 0, entryLayout.width, 0)
+  }
   pop()
 }
 
-const drawTimeline = (entryProps, mode) => {
+const drawTimeline = (entryProps, mode, day) => {
   let timeRange;
   if (mode == "morning") {
     timeRange = entryLayout.morningTimeRange;
@@ -243,6 +314,15 @@ const drawTimeline = (entryProps, mode) => {
     timeRange = entryLayout.eveningTimeRange;
   }
 
+  if (day != "Saturday" && day != "Sunday" && day != "Wednesday") {
+    const workStart = map(540, timeRange.min, timeRange.max, 0, entryLayout.width)
+    const workEnd = map(540, timeRange.min, timeRange.max, 0, entryLayout.width)
+    fill(0, 50, 150, 20)
+    noStroke()
+    rect(workStart, 0, workEnd, entryLayout.height)
+  }
+
+  stroke(0)
   if (entryProps.changeTime) {
     // draw first train
     let firstTrainStart = map(entryProps.checkIn, timeRange.min, timeRange.max, 0, entryLayout.width)
@@ -266,16 +346,17 @@ const drawTimeline = (entryProps, mode) => {
 
 const drawTrain = (start, stop, mode) => {
   if (mode == "train") {
-    fill(0)
+    fill("#D61B1B")
   } else if (mode == "metro") {
-    fill(100)
+    fill("#e9e9e9")
   } else if (mode == "regional") {
-    fill(150)
+    fill("#2274AE")
   } else if (mode == "IC") {
-    fill(200)
+    fill("#2DB281")
   } else if (mode == "bus") {
-    fill(225)
+    fill("#F2AC16")
   }
+  strokeWeight(3)
   rectMode(CORNER)
   rect(start, entryLayout.marginVerticalTrain, stop - start, entryLayout.height - 2 * entryLayout.marginVerticalTrain, 5)
 }
@@ -283,7 +364,7 @@ const drawTrain = (start, stop, mode) => {
 const drawTargetTime = (targetTime, timeRange) => {
   const xPos = map(targetTime, timeRange.min, timeRange.max, 0, entryLayout.width)
 
-  stroke(100, 150, 255)
+  stroke("#B127C6")
   strokeWeight(5)
   line(xPos, entryLayout.marginVerticalTarget, xPos, entryLayout.height - entryLayout.marginVerticalTarget)
 }
